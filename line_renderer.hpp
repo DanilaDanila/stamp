@@ -24,26 +24,48 @@ void _line(sf::Vector2f p0, sf::Vector2f p1, sf::RenderWindow *win)
     win->draw(line);
 }
 
-void drawLine(unsigned from_x, unsigned from_y, unsigned to_x, unsigned to_y, DirectionFrom dir, unsigned padding_top, unsigned pudding, unsigned block_size, sf::RenderWindow *window)
+void drawLine(unsigned from_x, unsigned from_y, unsigned to_x, unsigned to_y, DirectionFrom dir, unsigned block_size, std::string label, sf::RenderWindow *window)
 {
+    unsigned text_size = block_size/6*3;
+    sf::Text text;
+    text.setCharacterSize(text_size);
+    text.setString(label);
+    text.setFillColor(sf::Color::Black);
+    
+    sf::Font font;
+    font.loadFromFile("/home/danila/Downloads/comic_sans.ttf");
+    text.setFont(font);
+
     if (dir == FROM_DOWN)
     {
         _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x, from_y+block_size/4), window);
         from_y += block_size/4;
+
+        text.setOrigin(sf::Vector2f(0, text.getLocalBounds().height/2));
+        text.setPosition(sf::Vector2f(from_x+4, from_y - block_size/4));
+        window->draw(text);
     }
     elif (dir == FROM_LEFT)
     {
         _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x-block_size, from_y), window);
         from_x -= block_size;
-        _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x, from_y+block_size), window);
-        from_y += block_size;
+        _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x, from_y+block_size*3/4), window);
+        from_y += block_size*3/4;
+
+        text.setOrigin(sf::Vector2f(text.getLocalBounds().width/2, text.getLocalBounds().height));
+        text.setPosition(sf::Vector2f(from_x + block_size/2, from_y - block_size*3/4-text.getLocalBounds().height));
+        window->draw(text);
     }
     elif (dir == FROM_RIHGT)
     {
         _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x+block_size, from_y), window);
         from_x += block_size;
-        _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x, from_y+block_size), window);
-        from_y += block_size;
+        _line(sf::Vector2f(from_x, from_y), sf::Vector2f(from_x, from_y+block_size*3/4), window);
+        from_y += block_size*3/4;
+
+        text.setOrigin(sf::Vector2f(text.getLocalBounds().width/2, text.getLocalBounds().height));
+        text.setPosition(sf::Vector2f(from_x - block_size/2, from_y - block_size*3/4-text.getLocalBounds().height));
+        window->draw(text);
     }
 
     _line(sf::Vector2f(from_x, from_y), sf::Vector2f(to_x, from_y), window);

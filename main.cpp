@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "block_algorithm.hpp"
-#include "line_renderer.hpp"
+#include "connections.hpp"
 
 int main()
 {   
@@ -13,6 +13,11 @@ int main()
         setAlgorithmBlock(test_alg, 1, 0, "Input\n  A", BLOCK_IO);
     initAlgorithmLine(test_alg, 2, 1);
         setAlgorithmBlock(test_alg, 2, 0, "Return", BLOCK_TERMINATOR);
+
+    sf::Vector2f v = getBlockSocket(test_alg, 1, BOTTOM, 40, 400);
+    Connect c(getBlockSocket(test_alg, 11, RIGHT, 40, 400),
+              getBlockSocket(test_alg, 21, TOP, 40, 400),
+              FROM_RIHGT, "no");
 
     sf::RenderWindow window(sf::VideoMode(400, 400), "Stupid Algorithm Making Program");
 
@@ -27,7 +32,7 @@ int main()
 
         drawAlgorithm(test_alg, 3, 40, &window);
 
-        drawLine(40, 40, 300, 300, FROM_LEFT, 10, 20, 40, &window);
+        drawConnections(&c, 1, 40, &window);
 
         window.display();
     }
