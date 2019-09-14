@@ -2,6 +2,7 @@
 #define BLOCK_RENDERER_HPP
 
 #include "block.hpp"
+#include "block_algorithm.hpp"
 
 #define elif(condition) else if ((condition))
 
