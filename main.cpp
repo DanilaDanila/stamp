@@ -167,8 +167,8 @@ int main()
         algorithm[4][0]->type = BLOCK_TERMINATOR;
 
         algorithm[4][1] = new Block;
-        algorithm[4][0]->label = "nullptr";
-        algorithm[4][0]->type = BLOCK_TERMINATOR;
+        algorithm[4][1]->label = "nullptr";
+        algorithm[4][1]->type = BLOCK_TERMINATOR;
 
 
     sf::RenderWindow window(sf::VideoMode(400, 400), "Stupid Algorithm Making Program");
