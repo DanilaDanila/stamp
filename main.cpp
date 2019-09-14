@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "block_algorithm.hpp"
+#include "line_renderer.hpp"
 
 int main()
 {   
@@ -25,6 +26,8 @@ int main()
         window.clear(sf::Color::White);
 
         drawAlgorithm(test_alg, 3, 40, &window);
+
+        drawLine(40, 40, 300, 300, FROM_DOWN, 10, 20, 40, &window);
 
         window.display();
     }

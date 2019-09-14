@@ -42,8 +42,8 @@ void drawAlgorithm(Algorithm *alg, unsigned lines_count, unsigned size, sf::Rend
     while(alg[line][block_count] != NULL)
         block_count++;
 
-    #define padding_top 10
-    #define padding 20
+    const int padding_top = 10;
+    const int padding = 20;
     unsigned pos_y = (padding + size)*line + padding_top;
 
     for(unsigned i=0; i<block_count; i++)
