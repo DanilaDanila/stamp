@@ -27,7 +27,7 @@ int main()
 
         drawAlgorithm(test_alg, 3, 40, &window);
 
-        drawLine(40, 40, 300, 300, FROM_DOWN, 10, 20, 40, &window);
+        drawLine(40, 40, 300, 300, FROM_LEFT, 10, 20, 40, &window);
 
         window.display();
     }
