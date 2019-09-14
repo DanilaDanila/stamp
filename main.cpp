@@ -4,22 +4,164 @@
 #include "block_algorithm.hpp"
 #include "connections.hpp"
 
+#define WIN_W 400
+
 int main()
 {   
-    Algorithm *test_alg = initAlgorithm(3);
-    initAlgorithmLine(test_alg, 0, 1);
-        setAlgorithmBlock(test_alg, 0, 0, "Start", BLOCK_TERMINATOR);
-    initAlgorithmLine(test_alg, 1, 1);
-        setAlgorithmBlock(test_alg, 1, 0, "Input\n  A", BLOCK_IO);
-    initAlgorithmLine(test_alg, 2, 1);
-        setAlgorithmBlock(test_alg, 2, 0, "Return", BLOCK_TERMINATOR);
+    Algorithm *alg = NULL;
+    unsigned lines_count;
 
-    sf::Vector2f v = getBlockSocket(test_alg, 1, BOTTOM, 40, 400);
-    Connect c(getBlockSocket(test_alg, 11, RIGHT, 40, 400),
-              getBlockSocket(test_alg, 21, TOP, 40, 400),
-              FROM_RIHGT, "no");
+    Connect *connections = NULL;
+    unsigned connects_count;
 
-    sf::RenderWindow window(sf::VideoMode(400, 400), "Stupid Algorithm Making Program");
+    unsigned block_size = 40;
+
+    std::string command;
+    std::cout<<"SAMP $> ";
+    std::getline(std::cin, command);
+    while (command != "DRAW")
+    {
+        command+=" ";
+        std::string command_part = command.substr(0, command.find(" "));
+        command.erase(0, command.find(" ")+1);
+        if (command_part == "ALG")
+        {
+            command_part = command.substr(0, command.find(" "));
+            command.erase(0, command.find(" ")+1);
+            if (command_part == "INIT")
+            {
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+                if (command_part == "ALL")
+                {
+                    command_part = command.substr(0, command.find(" "));
+                    command.erase(0, command.find(" ")+1);
+                    lines_count = std::stoi(command_part);
+
+                    alg = initAlgorithm(lines_count);
+                }
+                elif (command_part == "LINE")
+                {
+                    command_part = command.substr(0, command.find(" "));
+                    command.erase(0, command.find(" ")+1);
+
+                    unsigned line = std::stoi(command_part);
+
+                    command_part = command.substr(0, command.find(" "));
+                    command.erase(0, command.find(" ")+1);
+
+                    unsigned block_count = std::stoi(command_part);
+
+                    initAlgorithmLine(alg, line, block_count);
+                }
+                else
+                    std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+            }
+            else
+                std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+        }
+        elif (command_part == "BLOCK")
+        {
+            command_part = command.substr(0, command.find(" "));
+            command.erase(0, command.find(" ")+1);
+
+            if(command_part == "SET")
+            {
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+
+                unsigned block_id = std::stoi(command_part);
+
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+
+                BlockType bt;
+                if (command_part == "TERMINATOR")
+                    bt = BLOCK_TERMINATOR;
+                elif (command_part == "PROCESS")
+                    bt = BLOCK_PROCESS;
+                elif (command_part == "CONDITION")
+                    bt = BLOCK_CONDITION;
+                elif (command_part == "IO")
+                    bt = BLOCK_IO;
+                else
+                    std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+
+                //command_part.replace(command_part.find("~"), 1, "\n");
+
+                setAlgorithmBlock(alg, block_id/10, block_id%10, command_part, bt);
+            }
+            else
+                std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+        }
+        elif (command_part == "CON")
+        {
+            command_part = command.substr(0, command.find(" "));
+            command.erase(0, command.find(" ")+1);
+
+            if (command_part == "INIT")
+            {
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+
+                connects_count = std::stoi(command_part);
+
+                connections = new Connect[connects_count];
+            }
+            elif (command_part == "CREATE")
+            {
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+                unsigned c_num = std::stoi(command_part);
+
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+                unsigned id_from = std::stoi(command_part);
+
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+                unsigned id_to = std::stoi(command_part);
+
+                command_part = command.substr(0, command.find(" "));
+                command.erase(0, command.find(" ")+1);
+
+                Port p;
+
+                if (command_part == "BOTTOM")
+                    p = BOTTOM;
+                elif (command_part == "LEFT")
+                    p = LEFT;
+                elif (command_part == "RIGHT")
+                    p = RIGHT;
+                else
+                    std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+
+                std::string label;
+                if (command != "")
+                {
+                    command_part = command.substr(0, command.find(" "));
+                    command.erase(0, command.find(" ")+1);
+                    label = command_part;
+                }
+
+                connections[c_num] = Connect(getBlockSocket(alg, id_from, p, block_size, WIN_W),
+                                             getBlockSocket(alg, id_to, TOP, block_size, WIN_W),
+                                             p, label);
+            }
+            else
+                std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+        }
+        else
+            std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
+
+        std::cout<<"SAMP $> ";
+        std::getline(std::cin, command);
+    }
+
+    sf::RenderWindow window(sf::VideoMode(400, WIN_W), "Stupid Algorithm Making Program");
 
     while(window.isOpen())
     {
@@ -30,9 +172,9 @@ int main()
         }
         window.clear(sf::Color::White);
 
-        drawAlgorithm(test_alg, 3, 40, &window);
+        drawAlgorithm(alg, lines_count, block_size, &window);
 
-        drawConnections(&c, 1, 40, &window);
+        //drawConnections(connections, connects_count, block_size, &window);
 
         window.display();
     }

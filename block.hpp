@@ -15,10 +15,6 @@ struct Block
     std::string label;
 
     BlockType type = BLOCK_UNDEFINED;
-
-    unsigned next_id;
-    unsigned left_id;
-    unsigned right_id;
 };
 
 #endif

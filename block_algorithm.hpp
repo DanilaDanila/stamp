@@ -33,6 +33,7 @@ void deleteAlgorithm(Algorithm *alg)
 
 void drawAlgorithm(Algorithm *alg, unsigned lines_count, unsigned size, sf::RenderWindow *window, unsigned line=0, unsigned left_border=0, unsigned right_border=0)
 {
+    if (alg == NULL) return;
     if (lines_count == 0) return;
 
     if (right_border == 0)
