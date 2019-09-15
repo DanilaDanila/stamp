@@ -17,7 +17,7 @@ int main()
     unsigned block_size = 40;
 
     std::string command;
-    std::cout<<"SAMP $> ";
+    std::cout<<"STAMP $> ";
     std::getline(std::cin, command);
     while (command != "DRAW")
     {
@@ -157,7 +157,7 @@ int main()
         else
             std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
 
-        std::cout<<"SAMP $> ";
+        std::cout<<"STAMP $> ";
         std::getline(std::cin, command);
     }
 
