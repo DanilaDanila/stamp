@@ -23,28 +23,6 @@ int main()
 
     unsigned block_size = 40;
 
-    lines_count = 3;
-    alg = initAlgorithm(3);
-    initAlgorithmLine(alg, 0, 1);
-    initAlgorithmLine(alg, 1, 1);
-    initAlgorithmLine(alg, 2, 1);
-
-    setAlgorithmBlock(alg, 0, 0, "Start", BLOCK_TERMINATOR);
-    setAlgorithmBlock(alg, 1, 0, "Output:\nHello", BLOCK_IO);
-    setAlgorithmBlock(alg, 2, 0, "End", BLOCK_TERMINATOR);
-
-    connects_count = 2;
-    connections = new Connect[2];
-    connections[0] = Connect(getBlockSocket(alg, 00, BOTTOM, block_size, WIN_W),
-                             getBlockSocket(alg, 10, TOP, block_size, WIN_W),
-                             FROM_DOWN);
-
-    connections[1] = Connect(getBlockSocket(alg, 10, BOTTOM, block_size, WIN_W),
-                             getBlockSocket(alg, 20, TOP, block_size, WIN_W),
-                             FROM_DOWN);
-
-    #ifdef ABC
-
     std::string command;
     std::cout<<"STAMP$> ";
     std::getline(std::cin, command);
@@ -220,8 +198,6 @@ int main()
         std::cout<<"STAMP$> ";
         std::getline(std::cin, command);
     }
-
-    #endif
 
     sf::RenderWindow window(sf::VideoMode(400, WIN_W), "Stupid Algorithm Making Program");
 
