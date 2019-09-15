@@ -6,6 +6,13 @@
 
 #define WIN_W 400
 
+void formatString(std::string &str)
+{
+    for(int i=0; i<str.length(); i++)
+        if((str[i] >= 'a') && (str[i] <= 'z'))
+            str[i] = 'A' + (str[i] - 'a'); 
+}
+
 int main()
 {   
     Algorithm *alg = NULL;
@@ -17,17 +24,49 @@ int main()
     unsigned block_size = 40;
 
     std::string command;
-    std::cout<<"STAMP $> ";
+    std::cout<<"STAMP$> ";
     std::getline(std::cin, command);
     while (command != "DRAW")
     {
         command+=" ";
+        formatString(command);
+
         std::string command_part = command.substr(0, command.find(" "));
         command.erase(0, command.find(" ")+1);
-        if (command_part == "ALG")
+
+        if (command_part == "EXIT")
+        {
+            exit(0);
+        }
+        elif (command_part == "HELP")
+        {
+            std::cout<<"\tALG\n";
+                std::cout<<"\t\tINIT\n";
+                    std::cout<<"\t\t\tALL [N]\n";
+                        std::cout<<"\t\t\t\t--init algorithm with [N] lines\n";
+                    std::cout<<"\t\t\tLINE [N] [M]\n";
+                        std::cout<<"\t\t\t\t--init line [N] in algorithm with [M] blocks\n";
+            std::cout<<"\n\tBLOCK\n";
+                std::cout<<"\t\tSET [id] [BlockType] label\n";
+                    std::cout<<"\t\t\t--set to block with id=[id](line*10+pos_in_line)\n";
+                    std::cout<<"\t\t\ttype=[BlockType] one of {TERMINATOR | PROCESS | CONDITION | IO}\n";
+                    std::cout<<"\t\t\twith lable=[label]\n";
+            std::cout<<"\n\tCON\n";
+                std::cout<<"\t\tINIT [N]\n";
+                    std::cout<<"\t\t\t--init [N] algorithm connections\n";
+                std::cout<<"\t\tCREATE [N] [FROM] [TO] [FROM_PORT] <label>\n";
+                    std::cout<<"\t\t\t--create connection num=[N]\n";
+                    std::cout<<"\t\t\tfrom block with id=[FROM] to block with id=[TO]\n";
+                    std::cout<<"\t\t\tfrom [FROM] block connect should exit from port=[FROM_PORT]\n";
+                    std::cout<<"\t\t\tport = {BOTTOM | LEFT | RIGHT}\n";
+                    std::cout<<"\t\t\t<label> - optional arg. Set label near connection\n";
+                
+        }
+        elif (command_part == "ALG")
         {
             command_part = command.substr(0, command.find(" "));
             command.erase(0, command.find(" ")+1);
+            
             if (command_part == "INIT")
             {
                 command_part = command.substr(0, command.find(" "));
@@ -129,7 +168,6 @@ int main()
                 command.erase(0, command.find(" ")+1);
 
                 Port p;
-
                 if (command_part == "BOTTOM")
                     p = BOTTOM;
                 elif (command_part == "LEFT")
@@ -157,7 +195,7 @@ int main()
         else
             std::cout<<"UNDEFINED COMMAND:\n\t"<<command_part<<"\n";
 
-        std::cout<<"STAMP $> ";
+        std::cout<<"STAMP$> ";
         std::getline(std::cin, command);
     }
 
