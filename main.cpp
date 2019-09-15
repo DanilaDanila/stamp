@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <unistd.h>
+
+#define font_adr "/media/DATA/projects/stamp/font1.ttf"
 
 #include "block_algorithm.hpp"
 #include "connections.hpp"
@@ -11,9 +14,12 @@ void formatString(std::string &str)
     for(int i=0; i<str.length(); i++)
         if((str[i] >= 'a') && (str[i] <= 'z'))
             str[i] = 'A' + (str[i] - 'a'); 
+        elif (str[i] == '%')
+            str[i] = 0xA;
+        
 }
 
-int main()
+int main(int argc, char **argv)
 {   
     Algorithm *alg = NULL;
     unsigned lines_count;
@@ -201,6 +207,8 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(400, WIN_W), "Stupid Algorithm Making Program");
 
+    bool saved = !(argc>1);
+
     while(window.isOpen())
     {
         sf::Event event;
@@ -215,6 +223,12 @@ int main()
         drawConnections(connections, connects_count, block_size, &window);
 
         window.display();
+        if(!saved)
+        {
+            window.capture().saveToFile(argv[1]);
+            saved = true;
+        }
+        usleep(10000);
     }
     return 0;
 }

@@ -94,7 +94,7 @@ void drawBlock(Block *block, sf::RenderWindow *window, unsigned pos_x, unsigned 
     text.setFillColor(sf::Color::Black);
     
     sf::Font font;
-    font.loadFromFile("/home/danila/Downloads/comic_sans.ttf");
+    font.loadFromFile(font_adr);
     text.setFont(font);
 
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width/2, 2));

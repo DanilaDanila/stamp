@@ -28,12 +28,12 @@ void drawLine(unsigned from_x, unsigned from_y, unsigned to_x, unsigned to_y, Di
 {
     unsigned text_size = block_size/6*3;
     sf::Text text;
-    text.setCharacterSize(text_size);
+    text.setCharacterSize(text_size/1.8);
     text.setString(label);
     text.setFillColor(sf::Color::Black);
     
     sf::Font font;
-    font.loadFromFile("/home/danila/Downloads/comic_sans.ttf");
+    font.loadFromFile(font_adr);
     text.setFont(font);
 
     if (dir == FROM_DOWN)
